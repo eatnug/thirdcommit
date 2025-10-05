@@ -62,3 +62,4 @@ prisma/migrations/*/migration.sql.bak
 
 # TypeScript
 *.tsbuildinfo
+.claude
