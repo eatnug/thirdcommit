@@ -1,4 +1,4 @@
-import type { Todo } from '@/core/entities/todo.entity'
+import type { Todo } from '@/domain/entities/todo.entity'
 
 /**
  * Todo Repository Port (Interface)

@@ -1,19 +1,23 @@
 import { useState, useEffect, useCallback } from 'react'
-import type { Todo } from '@/core/entities/todo.entity'
-import { getTodosUseCase } from '@/core/use-cases/get-todos.use-case'
-import { createTodoUseCase } from '@/core/use-cases/create-todo.use-case'
-import { toggleTodoUseCase } from '@/core/use-cases/toggle-todo.use-case'
-import { deleteTodoUseCase } from '@/core/use-cases/delete-todo.use-case'
+import type { Todo } from '@/domain/entities/todo.entity'
+import type { CreateTodoDto } from '@/domain/dto/create-todo.dto'
+import { getTodosUseCase } from '@/application/use-cases/get-todos.use-case'
+import { createTodoUseCase } from '@/application/use-cases/create-todo.use-case'
+import { toggleTodoUseCase } from '@/application/use-cases/toggle-todo.use-case'
+import { deleteTodoUseCase } from '@/application/use-cases/delete-todo.use-case'
+import { container } from '@/application/di/container'
 
 export function useTodos() {
   const [todos, setTodos] = useState<Todo[]>([])
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState<Error | null>(null)
 
+  const repository = container.todoRepository
+
   const loadTodos = useCallback(async () => {
     try {
       setIsLoading(true)
-      const loadedTodos = await getTodosUseCase()
+      const loadedTodos = await getTodosUseCase(repository)
       setTodos(loadedTodos)
       setError(null)
     } catch (err) {
@@ -21,41 +25,41 @@ export function useTodos() {
     } finally {
       setIsLoading(false)
     }
-  }, [])
+  }, [repository])
 
   useEffect(() => {
     loadTodos()
   }, [loadTodos])
 
-  const createTodo = useCallback(async (title: string) => {
+  const createTodo = useCallback(async (dto: CreateTodoDto) => {
     try {
-      await createTodoUseCase(title)
+      await createTodoUseCase(repository, dto)
       await loadTodos()
     } catch (err) {
       setError(err as Error)
       throw err
     }
-  }, [loadTodos])
+  }, [repository, loadTodos])
 
   const toggleTodo = useCallback(async (todoId: string) => {
     try {
-      await toggleTodoUseCase(todoId)
+      await toggleTodoUseCase(repository, todoId)
       await loadTodos()
     } catch (err) {
       setError(err as Error)
       throw err
     }
-  }, [loadTodos])
+  }, [repository, loadTodos])
 
   const deleteTodo = useCallback(async (todoId: string) => {
     try {
-      await deleteTodoUseCase(todoId)
+      await deleteTodoUseCase(repository, todoId)
       await loadTodos()
     } catch (err) {
       setError(err as Error)
       throw err
     }
-  }, [loadTodos])
+  }, [repository, loadTodos])
 
   return {
     todos,

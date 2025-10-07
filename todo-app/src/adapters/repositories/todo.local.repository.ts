@@ -1,5 +1,5 @@
-import type { Todo } from '@/core/entities/todo.entity'
-import type { ITodoRepository } from '@/core/ports/todo.repository.port'
+import type { Todo } from '@/domain/entities/todo.entity'
+import type { ITodoRepository } from '@/application/ports/todo.repository.port'
 import { localStorageService } from '@/infrastructure/storage/local-storage'
 
 const STORAGE_KEY = 'todos'
@@ -47,4 +47,4 @@ class LocalTodoRepository implements ITodoRepository {
   }
 }
 
-export const todoRepository: ITodoRepository = new LocalTodoRepository()
+export const localTodoRepository: ITodoRepository = new LocalTodoRepository()

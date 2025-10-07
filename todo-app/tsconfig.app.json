@@ -29,10 +29,11 @@
     "baseUrl": ".",
     "paths": {
       "@/*": ["./src/*"],
-      "@/core/*": ["./src/core/*"],
-      "@/data/*": ["./src/data/*"],
-      "@/presentation/*": ["./src/presentation/*"],
+      "@/domain/*": ["./src/domain/*"],
+      "@/application/*": ["./src/application/*"],
       "@/infrastructure/*": ["./src/infrastructure/*"],
+      "@/adapters/*": ["./src/adapters/*"],
+      "@/presentation/*": ["./src/presentation/*"],
       "@/shared/*": ["./src/shared/*"]
     }
   },

@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
-import type { Todo } from '@/core/entities/todo.entity'
-import { getTodoByIdUseCase } from '@/core/use-cases/get-todo-by-id.use-case'
+import type { Todo } from '@/domain/entities/todo.entity'
+import { getTodoByIdUseCase } from '@/application/use-cases/get-todo-by-id.use-case'
+import { container } from '@/application/di/container'
 
 export function useTodo(id: string) {
   const [todo, setTodo] = useState<Todo | null>(null)
@@ -11,7 +12,8 @@ export function useTodo(id: string) {
     const loadTodo = async () => {
       try {
         setIsLoading(true)
-        const loadedTodo = await getTodoByIdUseCase(id)
+        const repository = container.todoRepository
+        const loadedTodo = await getTodoByIdUseCase(repository, id)
         setTodo(loadedTodo)
         setError(null)
       } catch (err) {
