@@ -1,0 +1,84 @@
+{
+  "overrides": [
+    {
+      "files": ["src/core/entities/**/*.ts"],
+      "rules": {
+        "no-restricted-imports": [
+          "error",
+          {
+            "patterns": [
+              {
+                "group": ["@/presentation/*", "@/data/*", "@/infrastructure/*"],
+                "message": "Entities cannot import from presentation, data, or infrastructure layers."
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "files": ["src/core/use-cases/**/*.ts"],
+      "rules": {
+        "no-restricted-imports": [
+          "error",
+          {
+            "patterns": [
+              {
+                "group": ["@/presentation/*", "@/infrastructure/*"],
+                "message": "Use cases cannot import from presentation or infrastructure layers."
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "files": ["src/core/errors/**/*.ts"],
+      "rules": {
+        "no-restricted-imports": [
+          "error",
+          {
+            "patterns": [
+              {
+                "group": ["@/presentation/*", "@/data/*", "@/infrastructure/*"],
+                "message": "Errors cannot import from other layers."
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "files": ["src/data/**/*.ts"],
+      "rules": {
+        "no-restricted-imports": [
+          "error",
+          {
+            "patterns": [
+              {
+                "group": ["@/presentation/*"],
+                "message": "Data layer cannot import from presentation layer."
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "files": ["src/presentation/**/*.{ts,tsx}"],
+      "rules": {
+        "no-restricted-imports": [
+          "error",
+          {
+            "patterns": [
+              {
+                "group": ["@/data/sources/*", "@/data/models/*", "@/data/mappers/*"],
+                "message": "Presentation layer should use use-cases, not data sources directly."
+              }
+            ]
+          }
+        ]
+      }
+    }
+  ]
+}
