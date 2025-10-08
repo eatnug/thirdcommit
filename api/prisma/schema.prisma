@@ -1,33 +1,19 @@
-// Multi-schema Prisma setup for ThirdCommit multi-project repository
-// Each project has its own schema for complete data isolation
-
-datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
-  schemas  = ["project_a", "project_b"]
-}
-
 generator client {
   provider        = "prisma-client-js"
   previewFeatures = ["multiSchema"]
 }
 
-// ============================================
-// PROJECT A SCHEMA
-// ============================================
-
-model User {
-  id        String   @id @default(uuid())
-  email     String   @unique
-  name      String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  @@schema("project_a")
-  @@map("users")
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+  schemas  = ["my_feed", "stuff"]
 }
 
-model Task {
+// ============================================
+// Stuff Domain
+// ============================================
+
+model Stuff {
   id          String   @id @default(uuid())
   title       String
   description String?
@@ -35,26 +21,15 @@ model Task {
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 
-  @@schema("project_a")
-  @@map("tasks")
+  @@map("todos")
+  @@schema("stuff")
 }
 
 // ============================================
-// PROJECT B SCHEMA
+// My Feed Domain
 // ============================================
 
-model UserB {
-  id        String   @id @default(uuid())
-  email     String   @unique
-  name      String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  @@schema("project_b")
-  @@map("users")
-}
-
-model TaskB {
+model MyFeed {
   id          String   @id @default(uuid())
   title       String
   description String?
@@ -62,6 +37,6 @@ model TaskB {
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 
-  @@schema("project_b")
-  @@map("tasks")
+  @@map("feeds")
+  @@schema("my_feed")
 }

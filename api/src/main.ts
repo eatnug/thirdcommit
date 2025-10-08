@@ -8,8 +8,7 @@ async function bootstrap() {
   // Enable CORS for frontend apps
   app.enableCors({
     origin: [
-      'http://localhost:3000', // project-a-web
-      'http://localhost:3001', // project-b-web
+      'http://localhost:5173', // stuff (Vite default)
     ],
     credentials: true,
   });
@@ -22,10 +21,10 @@ async function bootstrap() {
     }),
   );
 
-  const port = process.env.PORT || 4000;
+  const port = process.env.PORT || 3000;
   await app.listen(port);
   console.log(`🚀 API Server running on http://localhost:${port}`);
-  console.log(`📁 Project A API: http://localhost:${port}/api/project-a`);
-  console.log(`📁 Project B API: http://localhost:${port}/api/project-b`);
+  console.log(`📁 Stuff API: http://localhost:${port}/api/stuff/todos`);
+  console.log(`📁 My Feed API: http://localhost:${port}/api/my-feed/feeds`);
 }
 bootstrap();

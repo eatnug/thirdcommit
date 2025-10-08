@@ -1,35 +1,15 @@
-import { Module, NestModule, MiddlewareConsumer } from '@nestjs/common';
-import { ClsModule, ClsMiddleware } from 'nestjs-cls';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
-import { TenantModule } from './tenant/tenant.module';
-import { TenantMiddleware } from './tenant/tenant.middleware';
-import { PrismaModule } from './prisma/prisma.module';
-import { ProjectAModule } from './projects/project-a/project-a.module';
-import { ProjectBModule } from './projects/project-b/project-b.module';
+import { Module } from '@nestjs/common';
+import { StuffModule } from '@/stuff/stuff.module';
+import { MyFeedModule } from '@/my-feed/my-feed.module';
 
+/**
+ * App Module
+ *
+ * 각 프로젝트 모듈은 독립적인 스키마에만 접근:
+ * - StuffModule → stuff 스키마
+ * - MyFeedModule → my_feed 스키마
+ */
 @Module({
-  imports: [
-    // ClsModule for AsyncLocalStorage-based context management
-    ClsModule.forRoot({
-      global: true,
-      middleware: { mount: false }, // We'll apply it manually for ordering
-    }),
-    // Global modules
-    TenantModule,
-    PrismaModule,
-    // Project modules
-    ProjectAModule,
-    ProjectBModule,
-  ],
-  controllers: [AppController],
-  providers: [AppService],
+  imports: [StuffModule, MyFeedModule],
 })
-export class AppModule implements NestModule {
-  configure(consumer: MiddlewareConsumer) {
-    // Apply ClsMiddleware first to set up async context
-    consumer.apply(ClsMiddleware).forRoutes('*');
-    // Then apply tenant middleware to extract and set tenant ID
-    consumer.apply(TenantMiddleware).forRoutes('*');
-  }
-}
+export class AppModule {}
